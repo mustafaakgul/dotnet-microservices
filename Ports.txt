@@ -1,2 +1,5 @@
 Services
 -catalogAPI => http://localhost:5011 => localhost:5011/swagger/index.html
+
+Endpoints Identity Server
+https://localhost:5001/.well-known/openid-configuration
