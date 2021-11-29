@@ -1,8 +1,10 @@
 ﻿using Microservices.Services.Catalog.Services;
 using Microservices.Services.Catalog.Settings;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -28,12 +30,25 @@ namespace Microservices.Services.Catalog
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.Authority = Configuration["IdentityServerURL"];  //bu apple token tagtmakta grevli bu
+                options.Audience = "resource_catalog";  //tokenin icindeki resource olmalu  aud parmetrelere bakacak bu varmı
+                options.RequireHttpsMetadata = false;  //default https bekler bunu pasif yapalım
+            });
+            //farklı uyelik sistemleri girerese bayiler ve normal uselar iin schema kullanılır
+
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ICourseService, CourseService>();
 
             services.AddAutoMapper(typeof(Startup));
 
-            services.AddControllers();
+            //eskiden services.AddControllers(); boyleydi ancak methodlara tokensiz istemedigimzden butun controllerlara uygulansın diye evrimlestirecegiz
+            //asagıdaki sayesnden tum contorllerlar authorize ile islendi
+            services.AddControllers(opt =>
+            {
+                opt.Filters.Add(new AuthorizeFilter());
+            });
 
             //Datalar Configuration uzernden gelecek getsection method ile
             //bunu startp gectigimzden snra herhangi bir ifade ile artık alttaki satiri kulanabliriz
@@ -60,7 +75,7 @@ namespace Microservices.Services.Catalog
             }
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
