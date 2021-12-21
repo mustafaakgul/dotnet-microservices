@@ -67,7 +67,7 @@ namespace Microservices.IdentityServer
                     ClientSecrets= {new Secret("secret".Sha256())},
                     AllowedGrantTypes= GrantTypes.ResourceOwnerPassword,
                     //offlineaccess refresh tokendir cnku 1 saatlik sresi dolunca otomatk login ekrarına dondurmek lazım tekrar token almamız lazım, sure uzatmak da cozum ama yanlıs yontem, token suresi dolarsa kullanıcıya hissettirmeden sure doalrsa git refresh yap devam bunuda login ekranına DONDURMEDEN yapılmalı hissettirmedenki kasıt bu bu yuzden offline access deniyor diger ismi
-                    AllowedScopes={ "basket_fullpermission", "order_fullpermission", "gateway_fullpermission", IdentityServerConstants.StandardScopes.Email, IdentityServerConstants.StandardScopes.OpenId,IdentityServerConstants.StandardScopes.Profile, IdentityServerConstants.StandardScopes.OfflineAccess, IdentityServerConstants.LocalApi.ScopeName,"roles" },
+                    AllowedScopes={ "basket_fullpermission", "discount_fullpermission", "payment_fullpermission", "order_fullpermission", "gateway_fullpermission", IdentityServerConstants.StandardScopes.Email, IdentityServerConstants.StandardScopes.OpenId,IdentityServerConstants.StandardScopes.Profile, IdentityServerConstants.StandardScopes.OfflineAccess, IdentityServerConstants.LocalApi.ScopeName,"roles" },   //discount_fullpermission, payment_fullpermission ekledi videoda ama //TODO
                     AccessTokenLifetime=1*60*60, //1 saat
                     RefreshTokenExpiration=TokenExpiration.Absolute,
                     AbsoluteRefreshTokenLifetime= (int) (DateTime.Now.AddDays(60)- DateTime.Now).TotalSeconds,  //60 gun

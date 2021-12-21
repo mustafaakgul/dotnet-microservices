@@ -1,0 +1,24 @@
+﻿namespace Microservices.Services.Discount.Scripts
+{
+    public class dbcount_sql_scripts
+    {
+    }
+}
+
+/*
+﻿create table Discount(
+Id serial primary key,
+UserId varchar(200)  not null,
+Rate smallint not null,
+Code  varchar(50)  not null,
+CreatedDate timestamp not null default CURRENT_TIMESTAMP
+)
+
+CREATE TABLE public.discount (
+	id serial NOT NULL,
+	userid varchar(200) NOT NULL,
+	rate int2 NOT NULL,
+	code varchar(50) NOT NULL,
+	createddate timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+*/
