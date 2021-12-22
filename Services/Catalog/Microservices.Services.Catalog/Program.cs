@@ -1,5 +1,8 @@
+﻿using Microservices.Services.Catalog.DTOs;
+using Microservices.Services.Catalog.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,9 +14,30 @@ namespace Microservices.Services.Catalog
 {
     public class Program
     {
-        public static void Main(string[] args)
+        /*public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
+        }*/
+        public static void Main(string[] args)
+        {
+            var host = CreateHostBuilder(args).Build();
+
+            //program calısırken 1 ker calısscak data yoksa eklicek srekli bir yasam dngusu felan olmayacak
+
+            using (var scope = host.Services.CreateScope())
+            {
+                var serviceProvider = scope.ServiceProvider;
+
+                var categoryService = serviceProvider.GetRequiredService<ICategoryService>();
+
+                if (!categoryService.GetAllAsync().Result.Data.Any())
+                {
+                    categoryService.CreateAsync(new CategoryDto { Name = "Asp.net Core Kursu" }).Wait();
+                    categoryService.CreateAsync(new CategoryDto { Name = "Asp.net Core API Kursu" }).Wait();
+                }
+            }
+
+            host.Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

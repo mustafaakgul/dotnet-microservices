@@ -5,6 +5,7 @@ Services
 -discount	=> http://localhost:5014 => http://localhost:5014/swagger/index.html
 -order	    => http://localhost:5015 => http://localhost:5015/swagger/index.html
 -fakepayment=> http://localhost:5016 => http://localhost:5016/swagger/index.html
+-gw         => http://localhost:5000 => http://localhost:5000/swagger/index.html
 
 Endpoints Identity Server
 https://localhost:5001/.well-known/openid-configuration
