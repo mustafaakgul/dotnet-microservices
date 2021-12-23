@@ -7,13 +7,13 @@ namespace Microservices.Shared.DTOs
 {
     public class Response<T>
     {
-        public T Data { get; private set; } //dısardan nesne ornegni degistiremeyecek
+        public T Data { get; set; } //dısardan nesne ornegni degistiremeyecek
 
         [JsonIgnore]
-        public int StatusCode { get; private set; }  //bu properryden fayfalancaz ama respnse icinde olmasına grek yok yansımasın postmandde gozuken status code bu biseye vrunca
+        public int StatusCode { get; set; }  //bu properryden fayfalancaz ama respnse icinde olmasına grek yok yansımasın postmandde gozuken status code bu biseye vrunca
 
         [JsonIgnore]
-        public bool IsSuccessful { get; private set; }  //client jsonignore ile karıslasmayacak kodda kullancaz
+        public bool IsSuccessful { get; set; }  //client jsonignore ile karıslasmayacak kodda kullancaz
 
         public List<string> Errors { get; set; }
 
