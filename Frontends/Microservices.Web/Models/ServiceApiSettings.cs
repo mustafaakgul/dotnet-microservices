@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace Microservices.Web.Models
 {
+    //bu app settingsdeki json objelerini almak icin tip guvenli classa cevirip alıyoruz
     public class ServiceApiSettings
     {
         public string IdentityBaseUri { get; set; }

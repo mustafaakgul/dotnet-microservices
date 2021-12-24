@@ -1,9 +1,12 @@
-﻿using Microservices.Shared.Services;
+﻿using FluentValidation.AspNetCore;
+using Microservices.Shared.Services;
+using Microservices.Web.Extensions;
 using Microservices.Web.Handler;
 using Microservices.Web.Helpers;
 using Microservices.Web.Models;
 using Microservices.Web.Services;
 using Microservices.Web.Services.Interfaces;
+using Microservices.Web.Validators;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -43,9 +46,11 @@ namespace Microservices.Web
             services.AddScoped<ResourceOwnerPasswordTokenHandler>();
             services.AddScoped<ClientCredentialTokenHandler>();
 
-            var serviceApiSettings = Configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
+            services.AddHttpClientServices(Configuration);
 
-            services.AddHttpClient<IClientCredentialTokenService, ClientCredentialTokenService>();
+            //var serviceApiSettings = Configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
+
+            /*services.AddHttpClient<IClientCredentialTokenService, ClientCredentialTokenService>();
 
             services.AddHttpClient<IIdentityService, IdentityService>(); //bunu signin de contrustr olarak kkllndigimzdan eklerz orada new ile uretmek yerine uygulama dnsun
 
@@ -68,7 +73,12 @@ namespace Microservices.Web
             }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
             //userservide bi istek baslatıldıgında git resource classını calıstır demek
 
-            
+            services.AddHttpClient<IBasketService, BasketService>(opt =>
+            {
+                opt.BaseAddress = new Uri($"{serviceApiSettings.GatewayBaseUri}/{serviceApiSettings.Basket.Path}");
+            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();*/
+
+
             //altta addcookie dedigi icin mvc tarfnda cookie bazlı kmlk dogrulama yetklndrme var ama servis traflarnda microsservics addjwt dendiginzden token bazlı kmlk dogrulama
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, opts =>
             {
@@ -78,7 +88,8 @@ namespace Microservices.Web
                 opts.Cookie.Name = "udemywebcookie";
             });
 
-            services.AddControllersWithViews();
+            //services.AddControllersWithViews();
+            services.AddControllersWithViews().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CourseCreateInputValidator>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
